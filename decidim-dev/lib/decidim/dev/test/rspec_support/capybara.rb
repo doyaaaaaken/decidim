@@ -6,8 +6,8 @@ require "system_test_html_screenshots"
 module Decidim
   # Helpers meant to be used only during capybara test runs.
   module CapybaraTestHelpers
-    def switch_to_host(host = "lvh.me")
-      raise "Can't switch to a custom host unless it really exists. Use `whatever.lvh.me` as a workaround." unless /lvh\.me$/.match?(host)
+    def switch_to_host(host = "lvh.me", force = false)
+      raise "Can't switch to a custom host unless it really exists. Use `whatever.lvh.me` as a workaround." unless /lvh\.me$/.match?(host) || force
 
       app_host = (host ? "http://#{host}" : nil)
       Capybara.app_host = app_host
@@ -15,6 +15,10 @@ module Decidim
 
     def switch_to_default_host
       Capybara.app_host = nil
+    end
+
+    def switch_to_secure_context_host
+      Capybara.app_host = "http://localhost"
     end
   end
 end
